@@ -1,0 +1,42 @@
+{{ define "root/update_user.html" }}
+{{ template "header/index.html"}}
+{{ template "root/lnav.html" . }}
+<div class="col-sm-7">
+    <form action>
+        <div class="form-group">
+            <label for="username">新用户名</label>
+            <input type="text" class="form-control" placeholder="请输入新用户名" id="username">
+        </div>
+
+        <button type="button" style="float: right;" id="userSub" class="btn btn-primary">提交</button>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#userSub").click(function () {
+            if ($("#username").val() == "") {
+                alert("请输入新的用户名");
+                return false;
+            }
+
+            $.post("/user/update_user", {
+                Username: $("#username").val(),
+            },
+                function (data, status, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        alert(data);
+                        location.href = "/";
+                        return
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    // 处理请求失败的情况
+                    alert(jqXHR.responseText);
+                });
+        });
+    });
+</script>
+{{ template "root/rnav.html" . }}
+{{ template "root/fooer.html"}}
+
+{{ end }}

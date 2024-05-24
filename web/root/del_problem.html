@@ -1,0 +1,49 @@
+{{ define "root/del_problem.html" }}
+
+{{ template "header/index.html"}}
+{{ template "root/lnav.html" . }}
+<div class="col-sm-7">
+    <h2>删除在线问答文章</h2>
+    <p>通过选择删除指定在线问答文章</p>
+    <form action>
+        <div class="form-group">
+            <select name="cars" id="tid" class="custom-select-sm">
+                {{ range .article }}
+                <option value="{{ .ID }}">{{ .Title }}</option>
+                {{ end }}
+            </select>
+        </div>
+
+        <button type="submit" id="submit" class="btn btn-primary">提交</button>
+    </form>
+    <script>
+        // 提交表单
+        $(document).ready(function () {
+            $("#submit").click(function () {
+
+                $.post("/article/del_article", {
+                    ID: $("#tid").val(),
+
+                },
+                    function (data, status, jqXHR) {
+                        if (jqXHR.status == 200) {
+                            alert(data);
+                            location.href = "/problem/del_problem.html"
+                            return
+                        }
+
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        // 处理请求失败的情况
+                        alert(jqXHR.responseText);
+                    });
+            });
+        });
+    </script>
+</div>
+
+
+{{ template "root/rnav.html" }}
+{{ template "root/fooer.html"}}
+
+
+{{ end }}

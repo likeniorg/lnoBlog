@@ -1,0 +1,45 @@
+{{ define "root/index.html" }}
+{{ template "header/index.html" . }}
+{{ template "root/lnav.html" . }}
+
+<div class="col-sm-7">
+    {{ range .articles }}
+    <div class="card">
+
+        <div class="card-body  Success card  ">
+            <h4><a href="/article/a/{{ .ID }}">{{ .Title }}</a></h4>
+        </div>
+        <div class="card-footer   bg-secondary text-white">
+            <p style="margin: 0px;">版块：{{ .ArticleCategory.Category }}
+            </p>
+            <p style="margin: 0px;">创建时间：{{ .CreatedAt }}
+            </p>
+
+        </div>
+    </div>
+    <hr>
+    {{end}}
+
+</div>
+{{ template "root/rnav.html" . }}
+<!--分页-->
+<!-- <ul class="pagination justify-content-center">
+    <li class="page-item"><a class="page-link"
+        href="javascript:void(0);"><</a></li>
+    <li class="page-item"><a class="page-link"
+        href="javascript:void(0);">1</a></li>
+    <li class="page-item"><a class="page-link"
+        href="javascript:void(0);">2</a></li>
+    <li class="page-item"><a class="page-link"
+        href="javascript:void(0);">3</a></li>
+    <li class="page-item"><a class="page-link"
+        href="javascript:void(0);">......</a></li>
+    <li class="page-item"><a class="page-link"
+        href="javascript:void(0);">100</a></li>
+    <li class="page-item"><a class="page-link"
+        href="javascript:void(0);">></a></li>
+
+  </ul> -->
+{{ template "root/fooer.html"}}
+
+{{ end }}

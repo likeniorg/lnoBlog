@@ -1,0 +1,89 @@
+{{ define "admin/index.html" }}
+{{ template "header/index.html" . }}
+{{ template "admin/lnav.html" . }}
+<div class="col-sm-7">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Debian</h4>
+            <p class="card-text"></p>
+            <p class="card-text">Debian 是一个完全自由的操作系统！该链接为edu-12.5版本 </p>
+            <a href="http://mirrors.ustc.edu.cn/debian-cd/12.5.0/amd64/iso-cd/debian-edu-12.5.0-amd64-netinst.iso"
+                class="card-link">下载</a>
+            <a href="#" class="card-link">使用文档</a>
+        </div>
+
+    </div>
+    <div class="card">
+
+        <div class="card-body">
+            <h4 class="card-title"> keil5软件介绍
+            </h4>
+            <p class="card-text"></p>
+            <p class="card-text">
+                Keil5(Keil µVision 5)是一款专为嵌入式系统开发的集成开发环境(IDE)。12
+
+                Keil5由德国公司Keil
+                Software开发，提供了丰富的功能，适合基于ARM架构的嵌入式系统开发。这个软件包括了代码编辑器、编译器、调试器和仿真器等组件，支持多种编程语言，如C语言、C++语言和汇编语言。它的调试功能特别强大，包括单步执行、断点调试和变量监视等，有助于开发者高效地定位和解决问题。
+            </p>
+
+            <a href="https://www.keil.com/download/product/" class="card-link">下载</a>
+            <a href="#" class="card-link">使用文档</a>
+        </div>
+    </div>
+    <div class="card">
+
+        <div class="card-body">
+            <h4 class="card-title">MQTT X
+            </h4>
+            <p class="card-text"></p>
+            <p class="card-text">
+                MQTT X 是一款开源的 MQTT 5.0 桌面测试客户端，它支持在 macOS，Linux，Windows 操作系统上运行。MQTT X 支持创建多个同时在线的 MQTT 客户端，方便用户快速测试
+                MQTT/TCP、MQTT/TLS 、MQTT/WebSocket 的连接/发布/订阅功能及其他 MQTT 协议特性。
+
+            </p>
+
+            <a href="https://www.emqx.com/zh/downloads/MQTTX/v1.9.10/MQTTX-Setup-1.9.10-x64.exe"
+                class="card-link">下载</a>
+            <a href="#" class="card-link">使用文档</a>
+        </div>
+    </div>
+</div>
+{{ template "root/rnav.html" }}
+
+{{ template "fooer/index.html" }}
+
+<script>
+    // 提交表单
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            if (validateForm() == false) {
+                return
+            }
+            $.post("/article/create_category", {
+                Category: $("#category_name").val(),
+            },
+                function (data, status, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        alert(data);
+                        location.href = "/arcile/create_category.html"
+                        return
+                    }
+                    alert("未知错误：", jqXHR.status)
+
+                });
+        });
+    });
+
+    // 验证表单是否为空
+    function validateForm() {
+        // 检查版块是否为空
+        if ($("#category_name").val() === "") {
+            alert("请输入文章版块");
+            return false;
+        }
+
+        // 如果所有条件满足，返回 true
+        return true;
+    }
+</script>
+{{ end }}

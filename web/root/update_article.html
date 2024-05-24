@@ -1,0 +1,134 @@
+{{ define "root/update_article.html" }}
+{{ template "header/index.html" }}
+{{ template "root/lnav.html" .}}
+<div class="col-sm-9">
+
+    <form onsubmit="return false;" class="was-validated">
+        <!--选择文章-->
+        <div class="form-group">
+            <label for="class">选择要修改的文章</label>
+            <select class="form-control" onchange="getArticle()" id="sel">
+                <option></option>
+
+                {{ range .articles }}
+                <option value="{{ .ID }}">{{ .Title }}</option>
+                {{ end }}
+            </select>
+            <script>
+                function getArticle() {
+                    $("#title").val('');
+                    $("#tags").val('');
+                    $("#content_md").val('');
+                    $("#category").val('');
+                    url = '/article/getArticle?id=' + $("#sel").val()
+                    $.ajax({
+                        url, // 你的 API 端点
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            $("#title").val(data.article.Title);
+                            $("#tags").val(data.article.Tags);
+                            $("#content_md").val(data.article.ContentMD);
+                            $("#category").val(data.article.CategoryID);
+                        },
+                        error: function () {
+                            alert('Error retrieving articles');
+                        }
+                    });
+                }
+            </script>
+        </div> <!--博客Titilt-->
+        <div class="form-group">
+            <label for="title">标题</label>
+            <input required type="text" class="form-control" name="Title" id="title">
+            <div class="invalid-feedback">请输入文章标题</div>
+        </div>
+        <!--博客类型-->
+        <div class="form-group">
+            <label for="class">已有文章分类</label>
+            <select class="form-control" id="category">
+                {{ range .Category }}
+                <option value="{{ .ID }}">{{ .Category }}</option>
+                {{ end }}
+            </select>
+        </div>
+        <!--博客标签-->
+        <div class="form-group">
+            <label for="tags">文章标签</label>
+            <input type="text" required class="form-control" name="Content_md" rows="15" id="tags">
+            <div class="invalid-feedback">请输入文章标签</div>
+
+        </div>
+        <!--博客内容-->
+        <div class="form-group">
+            <label for="comment">文章内容</label>
+            <textarea required class="form-control" name="Content_md" rows="15" id="content_md"></textarea>
+            <div class="invalid-feedback">请输入文章内容</div>
+
+        </div>
+
+        <div class="form-group text-right">
+            <button style id="submit" type="button" class="btn  btn-primary">提交</button>
+
+        </div>
+
+    </form>
+</div>
+
+{{ template "root/fooer.html" }}
+
+<script>
+    // 提交表单
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            if (validateForm() == false) {
+                return
+            }
+            $.post("/article/update_article", {
+                ID: $("#sel").val(),
+                Title: $("#title").val(),
+                CategoryID: $("#category").val(),
+                ContentMD: $("#content_md").val(),
+                Tags: $("#tags").val()
+
+            },
+                function (data, status, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        alert(data);
+                        location.href = "/"
+                        return
+                    }
+
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    // 处理请求失败的情况
+                    alert(jqXHR.responseText);
+                });
+        });
+    });
+
+    // 验证表单是否为空
+    function validateForm() {
+        // 检查标题是否为空
+        if ($("#title").val() === "") {
+            alert("请输入文章标题");
+            return false;
+        }
+
+        // 检查分类是否为空
+        if ($("#category").val() === "") {
+            alert("请输入文章分类");
+            return false;
+        }
+
+        // 检查内容是否为空
+        if ($("#content_md").val() === "") {
+            alert("请输入文章内容");
+            return false;
+        }
+
+        // 如果所有条件满足，返回 true
+        return true;
+    }
+</script>
+{{ end }}

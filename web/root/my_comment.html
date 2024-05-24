@@ -1,0 +1,27 @@
+{{ define "root/my_comment.html" }}
+{{ template "header/index.html"}}
+{{ template "root/lnav.html" . }}
+<div class="col-sm-7">
+
+    {{ range .Comment }}
+
+    <div class="card">
+        <a href="/article/a/{{ .ArticleID}}" style="text-decoration: none; color: inherit;">
+            <div class="card-body">
+                <h6 class="card-title">文章标题：{{ .Article.Title }}</h6>
+                <p class="card-text">我的评论&nbsp;&nbsp;{{ .CommentText }}</p>
+                <p style="float: right;" class="card-text">{{ .CreatedAt }}</p>
+
+            </div>
+        </a>
+    </div>
+    <br>
+    {{ end }}
+
+
+</div>
+
+{{ template "root/rnav.html" }}
+{{ template "root/fooer.html"}}
+
+{{ end }}

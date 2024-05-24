@@ -1,0 +1,51 @@
+{{ define "root/rnav.html" }}
+<div class="col-sm-2 text-center">
+    <div class="container">
+        <h2>版块</h2>
+        <div id="getCategory">
+            <script>
+                $(document).ready(function () {
+                    var currentPath = location.pathname;
+                    var articleID = currentPath.split('/').pop();
+                    var ajaxURL;
+                    if (currentPath.startsWith("/article/a/")) {
+                        if (!isNaN(articleID)) {
+                            ajaxURL = "/getArticleCategory?id=" + articleID;
+                        } else {
+                            ajaxURL = "/getCategory";
+                        }
+                    } else {
+                        ajaxURL = "/getCategory";
+                    }
+                    $.ajax({
+                        url: ajaxURL, // 后端处理数据的URL
+                        type: "GET", // 请求类型，GET或POST
+                        dataType: "text", // 预期的服务器响应的数据类型
+                        success: function (data) {
+                            // 请求成功时的处理
+                            // 这里假设后端返回字符串数据
+                            $("#getCategory").html(data); // 将返回的字符串显示在getCategory元素中
+                        },
+                        error: function (data) {
+                            // 请求失败时的处理
+                            $("#getCategory").html(data);
+                        }
+                    });
+                });
+            </script>
+        </div>
+
+        <hr>
+        <h2>搜索文章</h2>
+        <form action="/article/search" method="get">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="请输入搜索内容" id="search" name="search">
+            </div>
+        </form>
+
+    </div>
+
+    <hr>
+
+</div>
+{{ end }}

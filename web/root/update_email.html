@@ -1,0 +1,41 @@
+{{ define "root/update_email.html" }}
+{{ template "header/index.html"}}
+{{ template "root/lnav.html" . }}
+<div class="col-sm-7">
+    <form action>
+        <div class="form-group">
+            <label for="email">新邮箱</label>
+            <input type="email" class="form-control" placeholder="请输入新邮箱" id="email">
+        </div>
+
+        <button id="emailSub" type="button" style="float: right;" class="btn btn-primary">提交</button>
+    </form>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#emailSub").click(function () {
+            if ($("#email").val() == "") {
+                alert("请输入新的邮箱号");
+                return false;
+            }
+
+            $.post("/user/update_email", {
+                Email: $("#email").val(),
+            },
+                function (data, status, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        alert(data);
+                        location.href = "/";
+                        return
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    // 处理请求失败的情况
+                    alert(jqXHR.responseText);
+                });
+        });
+    });
+</script>
+{{ template "root/rnav.html" . }}
+{{ template "root/fooer.html"}}
+
+{{ end }}

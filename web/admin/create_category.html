@@ -1,0 +1,67 @@
+{{ define "admin/create_category.html" }}
+{{ template "header/index.html" }}
+{{ template "admin/lnav.html" .}}
+<div class="col-sm-7">
+
+    <form onsubmit="return false;" class="was-validated">
+        <!--已有文章版块-->
+        <div class="form-group">
+            <div class="form-group">
+                <label for="class">已有文章版块</label>
+                <select class="form-control" id="class">
+                    {{ range .Category }}
+                    <option>{{ .Category }}</option>
+                    {{ end }}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="category_name">新的文章版块</label>
+                <input required type="text" class="form-control" id="category_name">
+                <div class="invalid-feedback">请输入文章版块</div>
+            </div>
+            <div class="form-group text-right">
+                <button id="submit" type="button" class="btn  btn-primary">新建</button>
+
+            </div>
+        </div>
+
+    </form>
+</div>
+{{ template "root/rnav.html" }}
+
+<script>
+    // 提交表单
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            if (validateForm() == false) {
+                return
+            }
+            $.post("/article/create_category", {
+                Category: $("#category_name").val(),
+            },
+                function (data, status, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        alert(data);
+                        location.href = "/article/create_category.html"
+                        return
+                    }
+                    alert("未知错误：", jqXHR.status)
+
+                });
+        });
+    });
+
+    // 验证表单是否为空
+    function validateForm() {
+        // 检查版块是否为空
+        if ($("#category_name").val() === "") {
+            alert("请输入文章版块");
+            return false;
+        }
+
+        // 如果所有条件满足，返回 true
+        return true;
+    }
+</script>
+{{ end }}

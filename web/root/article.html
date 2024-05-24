@@ -1,0 +1,93 @@
+{{ define "root/article.html" }}
+{{ template "header/index.html"}}
+{{ template "root/lnav.html" . }}
+<div class="col-sm-7">
+    <div class="card">
+
+        <div class="card-header  Success card  ">
+            <h5>{{ .article.Title }} </h5>
+        </div>
+        <div class="card-body ">
+            阅读次数: {{ .article.ReadCount }} <br>
+
+            {{ .html }}
+        </div>
+
+        <div class="card-footer   bg-secondary text-white">
+            <p style="margin: 0px;">创建时间：{{ .article.CreatedAt }}
+                最后修改时间：{{ .article.UpdatedAt }}</p>
+        </div>
+
+    </div>
+
+    <!--显示评论-->
+    <br>
+    <div class="card">
+        <!-- <div class="card-body">
+            <h6 class="card-title">北方的孤狼</h6>
+            <p class="card-text">&nbsp;&nbsp;&nbsp;&nbsp;这篇文章对我很有帮助~</p>
+            <p style="float: right;" class="card-text">2024.3.27</p>
+            <hr>
+            <div class="card-body">
+                <h6 class="card-title">南方的土豆</h6>
+                <p class="card-text">&nbsp;&nbsp;&nbsp;&nbsp;这篇文章对我很有帮助~</p>
+                <p style="float: right;" class="card-text">2024.3.27</p>
+                <div class="card-body">
+                    <h6 class="card-title">南方的土豆</h6>
+                    <p class="card-text">&nbsp;&nbsp;&nbsp;&nbsp;这篇文章对我很有帮助~</p>
+                    <p style="float: right;" class="card-text">2024.3.27</p>
+
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <br>
+    {{ range .Comment }}
+
+    <div class="card">
+        <div class="card-body">
+            <h6 class="card-title">{{ .User.Username }}</h6>
+            <p class="card-text">&nbsp;&nbsp;&nbsp;&nbsp;{{ .CommentText }}</p>
+            <p style="float: right;" class="card-text">{{ .CreatedAt }}</p>
+
+        </div>
+    </div>
+    <br>
+    {{ end }}
+
+    <div class="form-group">
+        <label for="comment">期待你的评论</label>
+        <textarea class="form-control" rows="5" id="comment_text"></textarea>
+        <button type="button" id="comment_sub" style="float: right;" class="btn btn-outline-info">提交评论</button>
+
+    </div>
+</div>
+<script>
+    // 提交表单
+    let id = {{ .article.ID }}
+    $(document).ready(function () {
+        $("#comment_sub").click(function () {
+
+            $.post("/article/comment", {
+                ArticleID: id,
+                CommentText: $("#comment_text").val()
+
+            },
+                function (data, status, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        alert(data);
+                        location.href = "/article/a/{{ .article.ID }}"
+                        return
+                    }
+
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    // 处理请求失败的情况
+                    alert(jqXHR.responseText);
+                });
+        });
+    });
+</script>
+{{ template "root/rnav.html" }}
+{{ template "root/fooer.html"}}
+
+{{ end }}
