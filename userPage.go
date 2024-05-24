@@ -101,7 +101,7 @@ func userPage(router *gin.Engine) {
 			authInfo := getAuthInfo(ctx)
 			// 检索文章信息并返回
 			article := []Article{}
-			result := db.Where("author_id = ? AND category_id = ?", authInfo.Uid, 1).Find(&article)
+			result := db.Where("author_id = ? AND category_id = ?", authInfo.Uid, 2).Find(&article)
 			// 如果数据库读取出错或者文章数量为0
 			if result.Error != nil || len(article) == 0 {
 				var errMessage string
@@ -124,7 +124,7 @@ func userPage(router *gin.Engine) {
 		problem.GET("/del_problem.html", func(ctx *gin.Context) {
 			// 检索文章信息并返回
 			article := []Article{}
-			result := db.Select("id,title,category_id").Where("category_id = ?", 1).Order("id desc").Find(&article)
+			result := db.Select("id,title,category_id").Where("category_id = ?", 2).Order("id desc").Find(&article)
 
 			// 如果数据库读取出错或者文章数量为0
 			if result.Error != nil || len(article) == 0 {

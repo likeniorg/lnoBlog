@@ -135,6 +135,31 @@ func publicPage(router *gin.Engine) {
 
 		ctx.HTML(200, "root/index.html", gin.H{"authInfo": getAuthInfo(ctx), "articles": articles})
 	})
+
+	// 评论处理
+	// 评论
+	router.POST("/article/comment", func(ctx *gin.Context) {
+		comment := Comment{}
+		err := ctx.ShouldBind(&comment)
+		if err != nil {
+			ctx.String(200, err.Error())
+			return
+		}
+		authInfo := getAuthInfo(ctx)
+		if authInfo.Uid == "" {
+			ctx.String(200, "请登录后评论")
+		}
+		uid, _ := strconv.Atoi(authInfo.Uid)
+		comment.UserID = uid
+		result := db.Create(&comment)
+		if result.Error != nil {
+			ctx.String(501, "评论创建失败 ")
+			return
+		} else {
+			ctx.String(200, "已记录您的高见~")
+		}
+
+	})
 	// 关于页面
 	r.GET("/about.html", func(ctx *gin.Context) {
 		ctx.HTML(200, "about/index.html", gin.H{"authInfo": getAuthInfo(ctx)})

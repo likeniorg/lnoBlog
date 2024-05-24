@@ -126,26 +126,6 @@ func dataHandler(router *gin.Engine) {
 			ctx.String(200, "删除版块成功")
 		})
 
-		// 评论
-		article.POST("/comment", func(ctx *gin.Context) {
-			comment := Comment{}
-			err := ctx.ShouldBind(&comment)
-			if err != nil {
-				ctx.String(200, err.Error())
-				return
-			}
-			fmt.Println(comment.CommentText + "111")
-			authInfo := getAuthInfo(ctx)
-			uid, _ := strconv.Atoi(authInfo.Uid)
-			comment.UserID = uid
-			result := db.Create(&comment)
-			if result.Error != nil {
-				fmt.Println(result.Error)
-			} else {
-				ctx.String(200, "成功 ")
-			}
-
-		})
 	}
 
 }

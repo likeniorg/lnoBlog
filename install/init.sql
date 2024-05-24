@@ -88,5 +88,5 @@ CREATE TABLE `users` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 
-INSERT INTO article_categories VALUE (0,"博客");
-INSERT INTO article_categories VALUE (1,"在线问答");
+INSERT INTO article_categories VALUE (1,"博客");
+INSERT INTO article_categories VALUE (2,"在线问答");
