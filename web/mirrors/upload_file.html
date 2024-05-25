@@ -1,0 +1,86 @@
+{{ define "mirrors/upload_file.html" }}
+{{ template "header/index.html" .}}
+{{ template "mirrors/lnav.html" . }}
+<div class="col-sm-7">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">
+                <label for="usr">文件名:</label>
+                <input type="text" class="form-control" id="filename">
+            </h4>
+            <h4 class="card-title">
+                <div class="form-group">
+                    <label for="comment">文件描述:</label>
+                    <textarea class="form-control" rows="5" id="fileComment"></textarea>
+                </div>
+            </h4>
+            <p class="card-text">
+            <div class="custom-file mb-3">
+                <input type="file" class="custom-file-input" id="file" name="filename">
+                <label class="custom-file-label" for="customFile">选择文件</label>
+            </div>
+            </p>
+            <button type="button" style="float: right;" class="btn btn-success">上传文件</button>
+
+        </div>
+
+    </div>
+
+</div>
+{{ template "root/rnav.html" }}
+
+{{ template "fooer/index.html" }}
+
+<script>
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            if (validateForm() == false) {
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append("filename", $("#filename").val());
+            formData.append("fileComment", $("#fileComment").val());
+            formData.append("file", $("#file")[0].files[0]);
+
+            $.ajax({
+                url: "/mirrors/upload_file",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data, status, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        alert(data);
+                        location.href = "/mirrors/upload_file.html";
+                    } else {
+                        alert("未知错误：" + jqXHR.status);
+                    }
+                },
+                error: function (jqXHR, status, error) {
+                    alert("上传失败：" + error);
+                }
+            });
+        });
+    });
+
+    function validateForm() {
+        if ($("#filename").val() === "") {
+            alert("请输入文件名");
+            return false;
+        }
+
+        if ($("#fileComment").val() === "") {
+            alert("请输入文件描述");
+            return false;
+        }
+
+        if ($("#file")[0].files.length === 0) {
+            alert("请选择一个文件");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+{{ end }}

@@ -148,6 +148,7 @@ func publicPage(router *gin.Engine) {
 		authInfo := getAuthInfo(ctx)
 		if authInfo.Uid == "" {
 			ctx.String(200, "请登录后评论")
+			return
 		}
 		uid, _ := strconv.Atoi(authInfo.Uid)
 		comment.UserID = uid

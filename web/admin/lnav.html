@@ -52,74 +52,7 @@
                                 </form>
                             </div>
 
-                            <!-- 模态框底部 -->
-                            <div class="modal-footer">
-                                <button type="button" id="login" class="btn btn-primary">登录</button>
 
-                                <!--注册逻辑-->
-                                <!-- 按钮：用于打开模态框 -->
-                                <button type="button" class="btn btn-secondary" data-toggle="modal"
-                                    data-target="#myModal1">
-                                    注册
-                                </button>
-
-                                <!-- 模态框 -->
-                                <div class="modal fade" id="myModal1">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!-- 模态框头部 -->
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">物联网知识在线问答平台注册</h4>
-                                                <button type="button" class="close"
-                                                    data-dismiss="modal">&times;</button>
-                                            </div>
-
-                                            <!-- 模态框主体 -->
-                                            <div class="modal-body">
-                                                <form action class="was-validated">
-                                                    <div class="form-group">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="register_email">邮箱</label>
-                                                        <input type="text" class="form-control" id="register_email"
-                                                            required>
-
-                                                        <div class="invalid-feedback">请输入邮箱</div>
-                                                    </div>
-                                                    <label for="register_name">用户名</label>
-                                                    <input type="text" class="form-control" id="register_name"
-                                                        name="uname" required>
-
-                                                    <div class="invalid-feedback">请输入用户名</div>
-
-                                                    <div class="form-group">
-                                                        <label for="register_pass">密码:</label>
-                                                        <input type="password" class="form-control" id="register_pass"
-                                                            placeholder name="pswd" required>
-
-                                                        <div class="invalid-feedback">请输入密码</div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="register_key">邀请码:</label>
-                                                        <input type="text" class="form-control" id="register_key"
-                                                            placeholder name="inviteCode" required>
-
-                                                        <div class="invalid-feedback">请输入邀请码</div>
-                                                    </div>
-                                                </form>
-                                            </div>
-
-                                            <!-- 模态框底部 -->
-                                            <div class="modal-footer">
-                                                <button type="button" id="register" class="btn btn-primary">注册</button>
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -135,11 +68,27 @@
 
             <div class="dropdown">
                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                    管理操作
+                    版块管理
                 </button>
                 <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item" href="/admin/create_category.html">创建版块</a>
                     <a class="dropdown-item " href="/admin/del_category.html">删除版块</a>
+
+                </div>
+            </div>
+        </li>
+
+        <!--用户操作-->
+        <li class="nav-item" style="margin-top: 10px;">
+
+            <div class="dropdown">
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                    用户管理
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" href="/admin/all_user.html">全部用户</a>
+                    <a class="dropdown-item" href="/admin/add_user.html">新建用户</a>
+                    <a class="dropdown-item " href="/admin/del_user.html">删除用户</a>
 
                 </div>
             </div>
@@ -150,62 +99,7 @@
     </ul>
     <hr class="d-sm-none">
 </div>
-<script>
-    // 提交表单
-    $(document).ready(function () {
-        $("#register").click(function () {
-            if (validateForm() == false) {
-                return
-            }
-            $.post("/register", {
-                Username: $("#register_name").val(),
-                Password: $("#register_pass").val(),
-                Email: $("#register_email").val(),
-                Key: $("#register_key").val()
 
-            },
-                function (data, status, jqXHR) {
-                    if (jqXHR.status == 200) {
-                        alert(data);
-                        location.href = "/";
-                        return
-                    }
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    // 处理请求失败的情况
-                    alert(jqXHR.responseText);
-                });
-        });
-    });
-
-    // 验证表单是否为空
-    function validateForm() {
-        // 检查标题是否为空
-        if ($("#register_email").val() === "") {
-            alert("请输入邮件号");
-            return false;
-        }
-
-        // 检查版块是否为空
-        if ($("#register_name").val() === "") {
-            alert("请输入用户名");
-            return false;
-        }
-
-        // 检查内容是否为空
-        if ($("#register_pass").val() === "") {
-            alert("请输入密码");
-            return false;
-        }
-
-        if ($("#register_key").val() === "") {
-            alert("请输入邀请码");
-            return false;
-        }
-
-        // 如果所有条件满足，返回 true
-        return true;
-    }
-</script>
 
 <!--登录-->
 <script>

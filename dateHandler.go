@@ -128,4 +128,34 @@ func dataHandler(router *gin.Engine) {
 
 	}
 
+	mirrors := router.Group("/mirrors", isUser())
+	{
+		mirrors.POST("/upload_file", func(ctx *gin.Context) {
+			// 处理文件上传和表单数据
+			filename := ctx.PostForm("filename")
+			fileComment := ctx.PostForm("fileComment")
+
+			form, err := ctx.MultipartForm()
+			if err != nil {
+				ctx.String(501, "获取表单失败")
+				return
+			}
+
+			files := form.File["file"]
+			for _, file := range files {
+				// 保存上传的文件到指定路径
+				err := ctx.SaveUploadedFile(file, fmt.Sprintf("./files/%s", file.Filename))
+				if err != nil {
+					ctx.String(501, "文件上传失败")
+					return
+				}
+			}
+
+			// 可以在这里处理 filename 和 fileComment
+			fmt.Printf("文件名: %s\n", filename)
+			fmt.Printf("文件描述: %s\n", fileComment)
+
+			ctx.String(200, "文件上传成功")
+		})
+	}
 }

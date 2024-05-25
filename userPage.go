@@ -119,7 +119,6 @@ func userPage(router *gin.Engine) {
 		problem.GET("/create_problem.html", func(ctx *gin.Context) {
 			ctx.HTML(200, "root/create_problem.html", gin.H{"authInfo": getAuthInfo(ctx)})
 		})
-
 		// 删除提问前端页面
 		problem.GET("/del_problem.html", func(ctx *gin.Context) {
 			// 检索文章信息并返回
@@ -159,4 +158,12 @@ func userPage(router *gin.Engine) {
 		})
 	}
 
+	// 资源下载站
+	mirror := router.Group("/mirrors")
+	{
+		// 上传文件
+		mirror.GET("/upload_file.html", func(ctx *gin.Context) {
+			ctx.HTML(200, "mirrors/upload_file.html", gin.H{"authInfo": getAuthInfo(ctx)})
+		})
+	}
 }

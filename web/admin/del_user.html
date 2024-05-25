@@ -1,16 +1,16 @@
-{{ define "admin/del_category.html" }}
+{{ define "admin/del_user.html" }}
 
 {{ template "header/index.html" .}}
 {{ template "admin/lnav.html" . }}
 <div class="col-sm-7">
-    <h2>删除版块</h2>
-    <p>通过选择删除指定版块</p>
+    <h2>删除用户</h2>
+    <p>通过选择删除指定用户</p>
 
     <form action>
         <div class="form-group">
             <select name="cars" id="tid" class="custom-select-sm">
-                {{ range .category }}
-                <option value="{{ .ID }}">{{ .Category }}</option>
+                {{ range .users }}
+                <option value="{{ .ID }}">{{ .Username }}</option>
                 {{ end }}
             </select>
         </div>
@@ -24,7 +24,7 @@
         $(document).ready(function () {
             $("#submit").click(function () {
 
-                $.post("/article/del_category", {
+                $.post("/admin/del_user", {
                     ID: $("#tid").val(),
 
 
@@ -32,7 +32,7 @@
                     function (data, status, jqXHR) {
                         if (jqXHR.status == 200) {
                             alert(data);
-                            location.href = "/admin/del_category.html"
+                            location.href = "/admin/del_user.html"
                             return
                         }
 

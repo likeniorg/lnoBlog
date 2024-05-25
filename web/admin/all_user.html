@@ -1,12 +1,29 @@
-{{ define "admin/index.html" }}
-{{ template "header/index.html" . }}
-{{ template "admin/lnav.html" . }}
+{{ define "admin/all_user.html" }}
+{{ template "header/index.html" .}}
+{{ template "admin/lnav.html" .}}
 <div class="col-sm-7">
-    <script>location.href = "/admin/all_user.html"</script>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>用户名</th>
+                <th>Email</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .users }}
+            <tr>
+                <td>{{ .ID }}</td>
+                <td>{{ .Username }}</td>
+                <td>{{ .Email }}</td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
 </div>
 {{ template "root/rnav.html" }}
-
-{{ template "fooer/index.html" }}
 
 <script>
     // 提交表单
@@ -21,7 +38,7 @@
                 function (data, status, jqXHR) {
                     if (jqXHR.status == 200) {
                         alert(data);
-                        location.href = "/arcile/create_category.html"
+                        location.href = "/admin/create_category.html"
                         return
                     }
                     alert("未知错误：", jqXHR.status)

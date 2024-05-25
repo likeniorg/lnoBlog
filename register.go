@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -24,7 +25,7 @@ func register(router *gin.Engine) {
 			ctx.String(501, "信息解析失败")
 			return
 		}
-
+		fmt.Println(1)
 		// 验证客户端信息
 		validate := validator.New()
 		err = validate.Struct(register)
@@ -32,12 +33,14 @@ func register(router *gin.Engine) {
 			ctx.String(501, "填写信息不符合要求")
 			return
 		}
+		fmt.Println(2)
 
 		// 判断注册密钥：临时策略，后期修改为一次性邀请密钥
 		if register.Key != Key {
 			ctx.String(501, "注册密钥错误")
 			return
 		}
+		fmt.Println(3)
 
 		users := User{}
 		isAdmin := db.Find(&users)
@@ -47,6 +50,8 @@ func register(router *gin.Engine) {
 			register.User.Identify = "user"
 
 		}
+		fmt.Println(4)
+
 		// 创建数据表
 		register.User.CreatedAt = time.Now()
 		hashPass, err := bcrypt.GenerateFromPassword([]byte(register.User.Password), bcrypt.MinCost)
@@ -54,6 +59,8 @@ func register(router *gin.Engine) {
 			ctx.String(501, "密码格式错误，不要加入特殊字符")
 			return
 		}
+		fmt.Println(5)
+
 		register.User.Password = string(hashPass)
 		result := db.Create(&register.User)
 
@@ -62,11 +69,12 @@ func register(router *gin.Engine) {
 				ctx.String(501, "已存在的用户名，请重新输入")
 				return
 			}
-
-			ctx.String(501, result.Error.Error())
+			ctx.String(501, "查询数据失败")
 			return
 		}
+		fmt.Println(6)
 
+		fmt.Println(7)
 		sendMail(register.User.Email, []byte("注册物联网知识在线问答社区成功，欢迎访问！"))
 		ctx.String(200, "注册成功")
 	})
