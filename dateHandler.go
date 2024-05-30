@@ -105,7 +105,8 @@ func dataHandler(router *gin.Engine) {
 		article.POST("/del_article", func(ctx *gin.Context) {
 			article := Article{}
 			ctx.ShouldBind(&article)
-			result := db.Where("id = ?", article.ID).Delete(&article)
+			fmt.Println(article)
+			result := db.Delete(&article)
 			if result.Error != nil {
 				ctx.String(500, "删除文章失败")
 				return

@@ -72,10 +72,10 @@ func register(router *gin.Engine) {
 			ctx.String(501, "查询数据失败")
 			return
 		}
-		fmt.Println(6)
 
-		fmt.Println(7)
-		sendMail(register.User.Email, []byte("注册物联网知识在线问答社区成功，欢迎访问！"))
+		// 发送邮件给用户
+		sendMail(register.User.Email, "注册成功", "注册物联网知识在线问答社区成功，欢迎访问")
+
 		ctx.String(200, "注册成功")
 	})
 }

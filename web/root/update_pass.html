@@ -1,5 +1,5 @@
 {{ define "root/update_pass.html" }}
-{{ template "header/index.html"}}
+{{ template "header/index.html" .}}
 {{ template "root/lnav.html" . }}
 <div class="col-sm-7">
     <form action>
@@ -8,7 +8,7 @@
             <input type="text" class="form-control" placeholder="请输入旧密码" name="oldpass" id="oldpass">
         </div>
         <div class="form-group">
-            <label for="newpass">旧密码</label>
+            <label for="newpass">新密码</label>
             <input type="password" class="form-control" placeholder="请输入新密码" name="newpass" id="newpass">
         </div>
         <button id="passSub" type="button" style="float: right;" class="btn btn-primary">提交</button>

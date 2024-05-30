@@ -6,6 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 服务器密钥
+// acmiawmdolxaaa1.1a
 // 用户操作页面
 func userPage(router *gin.Engine) {
 	// 文章前端页面，包括了我的文章、创建文章、修改文章、删除文章

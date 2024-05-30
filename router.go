@@ -12,4 +12,5 @@ func router(router *gin.Engine) {
 	register(router)
 	login(router)
 	adminPage(router)
+	adminHandler(router)
 }

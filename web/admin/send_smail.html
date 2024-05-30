@@ -1,0 +1,112 @@
+{{ define "admin/send_smail.html" }}
+
+{{ template "header/index.html" .}}
+{{ template "admin/lnav.html" . }}
+<div class="col-sm-7">
+    <!--注册逻辑-->
+
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+                <h4 class="modal-title">邮件发送</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- 模态框主体 -->
+            <div class="modal-body">
+                <form action class="was-validated">
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <label for="user_email">邮箱</label>
+                        <div class="form-group">
+                            <label for="sel1">下拉菜单:</label>
+                            <select class="form-control" id="email_1">
+                                {{ range .email_info }}
+                                <option>{{ .recipient }}</option>
+                                {{ end }}
+                            </select>
+                        </div>
+                        <div class="invalid-feedback">请选择用户邮箱号码</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="user_email">邮件标题</label>
+                        <input type="text" class="form-control" id="user_email" required>
+
+                        <div class="invalid-feedback">请输入邮件标题</div>
+                    </div>
+                    <label for="email_content">邮件内容</label>
+                    <input type="text" class="form-control" id="email_content" name="uname" required>
+
+                    <div class="invalid-feedback">请输入邮件内容</div>
+
+
+                </form>
+            </div>
+
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" id="send_email" class="btn btn-primary">发送邮件</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // 提交表单
+    $(document).ready(function () {
+        $("#send_email").click(function () {
+            if (validateForm() == false) {
+                return
+            }
+            $.post("/admin/send_email", {
+                Recipient: $("#email_1").val(),
+                Title: $("#title").val(),
+                Content: $("#email_content").val(),
+
+            },
+                function (data, status, jqXHR) {
+                    if (jqXHR.status == 200) {
+                        alert(data);
+                        location.href = "/admin/all_email.html";
+                        return
+                    }
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    // 处理请求失败的情况
+                    alert(jqXHR.responseText);
+                });
+        });
+    });
+
+    // 验证表单是否为空
+    function validateForm() {
+        // 检查标题是否为空
+        if ($("#email_1").val() === "") {
+            alert("请输入邮件号");
+            return false;
+        }
+
+        // 检查版块是否为空
+        if ($("#title").val() === "") {
+            alert("请输入邮件标题");
+            return false;
+        }
+
+        // 检查内容是否为空
+        if ($("#email_content").val() === "") {
+            alert("请输入邮件内容");
+            return false;
+        }
+
+        // 如果所有条件满足，返回 true
+        return true;
+    }
+</script>
+{{ template "root/rnav.html" }}
+{{ template "root/fooer.html"}}
+
+
+{{ end }}

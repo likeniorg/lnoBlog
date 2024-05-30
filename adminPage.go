@@ -37,26 +37,22 @@ func adminPage(r *gin.Engine) {
 			ctx.HTML(200, "admin/del_user.html", gin.H{"authInfo": getAuthInfo(ctx), "users": users})
 		})
 
-		// 删除用户
-		admin.POST("/del_user", func(ctx *gin.Context) {
-			user := User{}
-			err := ctx.ShouldBind(&user)
-			if err != nil {
-				ctx.String(501, "解析参数失败")
-				return
-			}
-			result := db.Delete(&user)
-			if result.Error != nil {
-				ctx.String(501, "删除用户失败")
-				return
-			}
-			ctx.String(200, "删除用户成功")
-		})
-
 		// 新建用户前端页面
 		admin.GET("/add_user.html", func(ctx *gin.Context) {
 
 			ctx.HTML(200, "admin/add_user.html", gin.H{"authInfo": getAuthInfo(ctx)})
+		})
+
+		// 可以发送给任意邮箱
+		admin.GET("/send_email.html", func(ctx *gin.Context) {
+
+			ctx.HTML(200, "admin/send_email.html", gin.H{"authInfo": getAuthInfo(ctx)})
+		})
+
+		// 指定用户邮箱号发送邮件
+		admin.GET("/send_smail.html", func(ctx *gin.Context) {
+
+			ctx.HTML(200, "admin/send_smail.html", gin.H{"authInfo": getAuthInfo(ctx)})
 		})
 	}
 
