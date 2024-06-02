@@ -49,11 +49,11 @@ func adminHandler(r *gin.Engine) {
 				return
 			}
 
-			result := db.Create(&info)
-			if result.Error != nil {
-				ctx.String(501, "记录邮件失败")
-				return
-			}
+			// result := db.Create(&info)
+			// if result.Error != nil {
+			// 	ctx.String(501, "记录邮件失败")
+			// 	return
+			// }
 
 			// 发送邮件
 			err := sendMail(info.Recipient, info.Title, info.Content)

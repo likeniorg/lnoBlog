@@ -88,5 +88,12 @@ CREATE TABLE `users` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 
+CREATE TABLE email_info(
+  id int PRIMARY KEY,
+  to varchar(255) not null,
+  titile varchar(255) not null,
+  content text not null
+);
+
 INSERT INTO article_categories VALUE (1,"博客");
 INSERT INTO article_categories VALUE (2,"在线问答");
